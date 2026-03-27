@@ -15,12 +15,12 @@ import {
   LogIn, LogOut, Newspaper, Users, FileText, BarChart2,
   Plus, Trash2, Edit3, Eye, EyeOff, Save, CheckCircle,
   AlertTriangle, ArrowLeft, Settings, MapPin, RefreshCw,
-  ExternalLink,
+  ExternalLink, Image, Upload, GripVertical,
 } from 'lucide-react'
 import {
   ADMIN_CONFIG, VOLUNTEER_SLOTS, DEFAULT_NEWS, FRIDGE_LOCATIONS,
 } from '../config/site.config'
-import { DEFAULT_PAGES } from '../hooks/useContent'
+import { DEFAULT_PAGES, DEFAULT_IMAGES } from '../hooks/useContent'
 
 // ─── HELPERS ──────────────────────────────────────────────────────────────────
 function loadContent() {
@@ -34,6 +34,7 @@ function loadContent() {
         slots:   parsed.slots   ?? VOLUNTEER_SLOTS.map(s => ({ ...s })),
         fridges: parsed.fridges ?? FRIDGE_LOCATIONS.map(f => ({ ...f })),
         pages:   { ...DEFAULT_PAGES, ...(parsed.pages ?? {}) },
+        images:  { ...DEFAULT_IMAGES, ...(parsed.images ?? {}) },
       }
     }
   } catch (_) {}
@@ -42,6 +43,7 @@ function loadContent() {
     slots:   VOLUNTEER_SLOTS.map(s => ({ ...s })),
     fridges: FRIDGE_LOCATIONS.map(f => ({ ...f })),
     pages:   { ...DEFAULT_PAGES },
+    images:  { ...DEFAULT_IMAGES },
   }
 }
 
@@ -135,6 +137,7 @@ const ADMIN_TABS = [
   { id: 'news',      label: 'News & Events',     icon: Newspaper },
   { id: 'slots',     label: 'Volunteer Slots',   icon: Users },
   { id: 'fridges',   label: 'Fridge Locations',  icon: MapPin },
+  { id: 'images',    label: 'Page Images',        icon: Image },
   { id: 'pages',     label: 'Page Content',      icon: FileText },
 ]
 
@@ -609,6 +612,182 @@ function FridgesTab({ content, onChange }) {
   )
 }
 
+// ─── PAGE IMAGES TAB ──────────────────────────────────────────────────────────
+const PAGE_KEYS = [
+  { key: 'home',      label: '🏠 Home' },
+  { key: 'about',     label: '👥 About Us' },
+  { key: 'volunteer', label: '🤝 Volunteer' },
+  { key: 'donate',    label: '💚 Donate' },
+  { key: 'news',      label: '📰 News & Events' },
+  { key: 'contact',   label: '✉️ Contact' },
+]
+
+function ImagesTab({ content, onChange }) {
+  const [activeKey, setActiveKey] = useState('home')
+  const [dragIdx, setDragIdx]     = useState(null)
+
+  const pageImages = content.images?.[activeKey] ?? []
+
+  const updateImages = (key, imgs) => {
+    onChange({ ...content, images: { ...(content.images ?? {}), [key]: imgs } })
+  }
+
+  // Upload: read files as base64 and append
+  const handleUpload = (e) => {
+    const files = Array.from(e.target.files)
+    if (!files.length) return
+    files.forEach(file => {
+      const reader = new FileReader()
+      reader.onload = (ev) => {
+        const newImg = {
+          id:      Date.now() + Math.random().toString(36).slice(2),
+          src:     ev.target.result,
+          caption: '',
+          alt:     file.name.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' '),
+        }
+        // Use functional update to batch multiple files correctly
+        onChange(prev => {
+          const existing = prev.images?.[activeKey] ?? []
+          return {
+            ...prev,
+            images: { ...(prev.images ?? {}), [activeKey]: [...existing, newImg] }
+          }
+        })
+      }
+      reader.readAsDataURL(file)
+    })
+    e.target.value = ''
+  }
+
+  const handleDelete = (id) => {
+    updateImages(activeKey, pageImages.filter(img => img.id !== id))
+  }
+
+  const updateCaption = (id, caption) => {
+    updateImages(activeKey, pageImages.map(img => img.id === id ? { ...img, caption } : img))
+  }
+
+  // Drag-and-drop reorder
+  const handleDragStart = (idx) => setDragIdx(idx)
+  const handleDragOver  = (e, idx) => {
+    e.preventDefault()
+    if (dragIdx === null || dragIdx === idx) return
+    const reordered = [...pageImages]
+    const [moved]   = reordered.splice(dragIdx, 1)
+    reordered.splice(idx, 0, moved)
+    updateImages(activeKey, reordered)
+    setDragIdx(idx)
+  }
+  const handleDragEnd = () => setDragIdx(null)
+
+  return (
+    <div>
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-2xl font-bold text-gray-900">Page Images</h2>
+      </div>
+      <p className="text-gray-500 text-sm mb-6">
+        Upload photos for each page. They appear in a <strong>left sidebar</strong> on the
+        public page. Drag cards to reorder. Changes go live immediately.
+      </p>
+
+      {/* Page selector */}
+      <div className="flex flex-wrap gap-2 mb-8">
+        {PAGE_KEYS.map(p => (
+          <button
+            key={p.key}
+            onClick={() => setActiveKey(p.key)}
+            className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
+              activeKey === p.key
+                ? 'bg-brand-600 text-white'
+                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+            }`}
+          >
+            {p.label}
+            {(content.images?.[p.key]?.length ?? 0) > 0 && (
+              <span className="ml-1.5 bg-white/30 text-xs px-1.5 py-0.5 rounded-full">
+                {content.images[p.key].length}
+              </span>
+            )}
+          </button>
+        ))}
+      </div>
+
+      {/* Upload button */}
+      <label className="flex items-center gap-2 btn-primary text-sm px-5 py-2.5 cursor-pointer w-fit mb-6">
+        <Upload size={15} />
+        Upload Photos to {PAGE_KEYS.find(p => p.key === activeKey)?.label}
+        <input
+          type="file"
+          accept="image/*"
+          multiple
+          className="sr-only"
+          onChange={handleUpload}
+        />
+      </label>
+
+      {/* Image grid — draggable */}
+      {pageImages.length === 0 ? (
+        <div className="border-2 border-dashed border-gray-200 rounded-xl p-12 text-center text-gray-400">
+          <Image size={40} className="mx-auto mb-3 opacity-30" />
+          <p className="text-sm font-medium">No images yet for this page.</p>
+          <p className="text-xs mt-1">Click "Upload Photos" above to add some.</p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {pageImages.map((img, idx) => (
+            <div
+              key={img.id}
+              draggable
+              onDragStart={() => handleDragStart(idx)}
+              onDragOver={(e) => handleDragOver(e, idx)}
+              onDragEnd={handleDragEnd}
+              className={`card p-0 overflow-hidden cursor-grab active:cursor-grabbing
+                          transition-all select-none
+                          ${dragIdx === idx ? 'opacity-50 scale-95 ring-2 ring-brand-400' : ''}`}
+            >
+              {/* Drag handle bar */}
+              <div className="flex items-center justify-between px-3 py-2 bg-gray-50 border-b border-gray-100">
+                <GripVertical size={14} className="text-gray-300" />
+                <span className="text-xs text-gray-400 font-medium">#{idx + 1}</span>
+                <button
+                  onClick={() => handleDelete(img.id)}
+                  className="p-1 rounded text-gray-400 hover:text-red-500 hover:bg-red-50 transition-all"
+                  title="Remove image"
+                >
+                  <Trash2 size={13} />
+                </button>
+              </div>
+
+              {/* Image */}
+              <div className="relative bg-gray-100" style={{ paddingBottom: '66.67%' }}>
+                <img
+                  src={img.src}
+                  alt={img.alt}
+                  className="absolute inset-0 w-full h-full object-cover"
+                  draggable={false}
+                />
+              </div>
+
+              {/* Caption input */}
+              <div className="p-3">
+                <input
+                  type="text"
+                  value={img.caption}
+                  onChange={e => updateCaption(img.id, e.target.value)}
+                  placeholder="Add a caption (optional)..."
+                  className="w-full text-xs border border-gray-200 rounded-lg px-2.5 py-1.5
+                             focus:outline-none focus:ring-2 focus:ring-brand-400"
+                  onClick={e => e.stopPropagation()}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
 // ─── PAGE CONTENT TAB ─────────────────────────────────────────────────────────
 function PagesTab({ content, onChange }) {
   const pages = content.pages
@@ -770,6 +949,7 @@ export default function Admin() {
         {activeTab === 'news'      && <NewsTab      content={content} onChange={setContent} />}
         {activeTab === 'slots'     && <SlotsTab     content={content} onChange={setContent} />}
         {activeTab === 'fridges'   && <FridgesTab   content={content} onChange={setContent} />}
+        {activeTab === 'images'    && <ImagesTab    content={content} onChange={setContent} />}
         {activeTab === 'pages'     && <PagesTab     content={content} onChange={setContent} />}
       </main>
     </div>

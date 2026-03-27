@@ -2,9 +2,10 @@ import { Link } from 'react-router-dom'
 import { MapPin, Users, Calendar, ExternalLink } from 'lucide-react'
 import { TEAM } from '../config/site.config'
 import { useContent } from '../hooks/useContent'
+import { PageWithSidebar } from '../components/PageImageSidebar'
 
 export default function About() {
-  const { pages, fridges } = useContent()
+  const { pages, fridges, images } = useContent()
 
   return (
     <>
@@ -20,6 +21,8 @@ export default function About() {
           </p>
         </div>
       </section>
+
+      <PageWithSidebar images={images.about}>
 
       {/* ── OUR STORY ───────────────────────────────────────────────── */}
       <section className="section-py bg-white">
@@ -140,6 +143,8 @@ export default function About() {
           </Link>
         </div>
       </section>
+
+      </PageWithSidebar>
     </>
   )
 }

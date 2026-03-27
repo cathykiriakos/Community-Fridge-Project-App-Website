@@ -2,9 +2,10 @@ import { Link } from 'react-router-dom'
 import { Heart, Package, MapPin, CheckCircle } from 'lucide-react'
 import { DONATE } from '../config/site.config'
 import { useContent } from '../hooks/useContent'
+import { PageWithSidebar } from '../components/PageImageSidebar'
 
 export default function Donate() {
-  const { pages, fridges } = useContent()
+  const { pages, fridges, images } = useContent()
 
   return (
     <>
@@ -20,6 +21,8 @@ export default function Donate() {
           </p>
         </div>
       </section>
+
+      <PageWithSidebar images={images.donate}>
 
       {/* ── DONATE OPTIONS ──────────────────────────────────────────── */}
       <section className="section-py bg-white">
@@ -143,6 +146,8 @@ export default function Donate() {
           </Link>
         </div>
       </section>
+
+      </PageWithSidebar>
     </>
   )
 }

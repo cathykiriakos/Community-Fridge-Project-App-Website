@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom'
 import VolunteerDashboard from '../components/VolunteerDashboard'
+import { useContent } from '../hooks/useContent'
+import { PageWithSidebar } from '../components/PageImageSidebar'
 
 const VOLUNTEER_ROLES = [
   {
@@ -47,6 +49,7 @@ const VOLUNTEER_ROLES = [
 ]
 
 export default function Volunteer() {
+  const { images } = useContent()
   return (
     <>
       {/* ── PAGE HEADER ─────────────────────────────────────────────── */}
@@ -62,6 +65,8 @@ export default function Volunteer() {
           </p>
         </div>
       </section>
+
+      <PageWithSidebar images={images.volunteer}>
 
       {/* ── LIVE DASHBOARD ──────────────────────────────────────────── */}
       <section className="section-py bg-white" aria-labelledby="dashboard-heading">
@@ -113,6 +118,8 @@ export default function Volunteer() {
           </Link>
         </div>
       </section>
+
+      </PageWithSidebar>
     </>
   )
 }

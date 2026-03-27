@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import { Mail, MessageSquare, Clock, CheckCircle } from 'lucide-react'
 import { useContent } from '../hooks/useContent'
+import { PageWithSidebar } from '../components/PageImageSidebar'
 
 export default function Contact() {
-  const { pages } = useContent()
+  const { pages, images } = useContent()
 
   const [submitted, setSubmitted] = useState(false)
   const [form, setForm] = useState({
@@ -44,6 +45,8 @@ export default function Contact() {
           </p>
         </div>
       </section>
+
+      <PageWithSidebar images={images.contact}>
 
       {/* ── CONTACT GRID ────────────────────────────────────────────── */}
       <section className="section-py bg-white">
@@ -179,6 +182,8 @@ export default function Contact() {
           </div>
         </div>
       </section>
+
+      </PageWithSidebar>
     </>
   )
 }

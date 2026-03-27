@@ -6,10 +6,9 @@
  *
  * Usage:
  *   const content = useContent()
- *   content.pages.missionBody   → CMS value if set, else config default
- *   content.fridges             → CMS fridges if set, else FRIDGE_LOCATIONS
- *   content.slots               → CMS slots if set, else VOLUNTEER_SLOTS
- *   content.news                → CMS news if set, else DEFAULT_NEWS
+ *   content.pages.missionBody     → CMS value if set, else config default
+ *   content.fridges               → CMS fridges if set, else FRIDGE_LOCATIONS
+ *   content.images.home           → uploaded images for Home page (base64)
  * ─────────────────────────────────────────────────────────────────────────────
  */
 import { useState, useEffect } from 'react'
@@ -61,6 +60,17 @@ export const DEFAULT_PAGES = {
   contactResponse: CONTACT.responseTime,
 }
 
+// Default images structure — keyed by page name, each is an array of image objects
+// image object: { id, src (base64 data URL), caption, alt }
+export const DEFAULT_IMAGES = {
+  home:      [],
+  about:     [],
+  volunteer: [],
+  donate:    [],
+  news:      [],
+  contact:   [],
+}
+
 function loadFromStorage() {
   try {
     const raw = localStorage.getItem(ADMIN_CONFIG.contentKey)
@@ -77,19 +87,21 @@ export function useContent() {
       fridges: stored?.fridges ?? [...FRIDGE_LOCATIONS],
       slots:   stored?.slots   ?? [...VOLUNTEER_SLOTS],
       news:    stored?.news    ?? [...DEFAULT_NEWS],
+      images:  stored?.images  ?? { ...DEFAULT_IMAGES },
     }
   })
 
-  // Re-read whenever admin saves (storage event fires in same tab too via custom event)
+  // Re-read whenever admin saves (same-tab custom event or cross-tab storage event)
   useEffect(() => {
     const sync = () => {
       const stored = loadFromStorage()
       if (stored) {
         setData({
-          pages:   stored.pages   ?? { ...DEFAULT_PAGES },
+          pages:   { ...DEFAULT_PAGES, ...(stored.pages ?? {}) },
           fridges: stored.fridges ?? [...FRIDGE_LOCATIONS],
           slots:   stored.slots   ?? [...VOLUNTEER_SLOTS],
           news:    stored.news    ?? [...DEFAULT_NEWS],
+          images:  { ...DEFAULT_IMAGES, ...(stored.images ?? {}) },
         })
       }
     }

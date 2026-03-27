@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Calendar, User } from 'lucide-react'
 import { useContent } from '../hooks/useContent'
+import { PageWithSidebar } from '../components/PageImageSidebar'
 
 function formatDate(dateStr) {
   return new Date(dateStr).toLocaleDateString('en-US', {
@@ -45,7 +46,7 @@ function NewsCard({ article }) {
 }
 
 export default function News() {
-  const { news: allArticles } = useContent()
+  const { news: allArticles, images } = useContent()
   const [activeFilter, setActiveFilter] = useState('all')
 
   const articles = allArticles.filter(a => a.published)
@@ -94,6 +95,8 @@ export default function News() {
         </div>
       </section>
 
+      <PageWithSidebar images={images.news}>
+
       {/* ── ARTICLE FEED ────────────────────────────────────────────── */}
       <section className="section-py bg-neutral-50">
         <div className="section-container">
@@ -114,6 +117,8 @@ export default function News() {
           )}
         </div>
       </section>
+
+      </PageWithSidebar>
     </>
   )
 }
