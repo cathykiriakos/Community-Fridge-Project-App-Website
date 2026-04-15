@@ -6,6 +6,32 @@
  * localStorage. Edit here to change baseline content across the whole site.
  * ─────────────────────────────────────────────────────────────────────────────
  */
+import { supabase } from '../lib/supabase'
+
+/**
+ * Fetch live impact counts from Supabase.
+ * Uses head:true so only the count is returned — no row data transferred.
+ *
+ * Returns:
+ *   { fridges: number, volunteers: number, donors: number }
+ *   Any field is null if the query fails (callers should fall back to defaults).
+ */
+export async function getImpactStats() {
+  const [
+    { count: fridges },
+    { count: volunteers },
+    { count: donors },
+  ] = await Promise.all([
+    supabase.from('fridges').select('*', { count: 'exact', head: true }).eq('is_active', true),
+    supabase.from('volunteers').select('*', { count: 'exact', head: true }).eq('is_active', true),
+    supabase.from('donors').select('*', { count: 'exact', head: true }).eq('is_active', true),
+  ])
+  return {
+    fridges:    fridges    ?? null,
+    volunteers: volunteers ?? null,
+    donors:     donors     ?? null,
+  }
+}
 
 // ─── BRAND ──────────────────────────────────────────────────────────────────
 export const BRAND = {
@@ -52,7 +78,7 @@ export const HOME = {
   impactStats: [
     { value: '5',     label: 'Community Fridges' },
     { value: '100+',  label: 'Active Volunteers' },
-    { value: '1,000+', label: 'Meals Served Monthly' },
+    { value: '0',      label: 'Donors & Supporters' },
     { value: '0',     label: 'Cost to Take Food' },
   ],
   overview: {

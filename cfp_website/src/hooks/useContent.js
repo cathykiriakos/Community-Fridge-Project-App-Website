@@ -4,6 +4,9 @@
  * Hook that merges Admin CMS overrides (localStorage) with site.config defaults.
  * All pages use this to ensure admin changes reflect in real-time.
  *
+ * Priority for impact stats (lowest → highest):
+ *   static config defaults  <  live Supabase counts  <  admin CMS overrides
+ *
  * Usage:
  *   const content = useContent()
  *   content.pages.missionBody     → CMS value if set, else config default
@@ -21,6 +24,7 @@ import {
   FRIDGE_LOCATIONS,
   VOLUNTEER_SLOTS,
   DEFAULT_NEWS,
+  getImpactStats,
 } from '../config/site.config'
 
 // Default pages content — all admin-editable text across every page
@@ -80,6 +84,9 @@ function loadFromStorage() {
 }
 
 export function useContent() {
+  // Live counts fetched from Supabase — sit between static defaults and admin overrides
+  const [liveStats, setLiveStats] = useState({})
+
   const [data, setData] = useState(() => {
     const stored = loadFromStorage()
     return {
@@ -90,6 +97,21 @@ export function useContent() {
       images:  stored?.images  ?? { ...DEFAULT_IMAGES },
     }
   })
+
+  // Fetch live impact counts once on mount; merge them below any admin override
+  useEffect(() => {
+    getImpactStats()
+      .then(({ fridges, volunteers, donors }) => {
+        const live = {}
+        if (fridges    != null) live.stat0 = String(fridges)
+        if (volunteers != null) live.stat1 = String(volunteers)
+        if (donors     != null) live.stat2 = String(donors)
+        setLiveStats(live)
+      })
+      .catch(() => {
+        // Network failure — silently keep static defaults
+      })
+  }, [])
 
   // Re-read whenever admin saves (same-tab custom event or cross-tab storage event)
   useEffect(() => {
@@ -113,5 +135,13 @@ export function useContent() {
     }
   }, [])
 
-  return data
+  // Merge priority: static defaults < live DB counts < admin CMS overrides
+  const stored = loadFromStorage()
+  const mergedPages = {
+    ...data.pages,
+    ...liveStats,
+    ...(stored?.pages ?? {}),
+  }
+
+  return { ...data, pages: mergedPages }
 }
