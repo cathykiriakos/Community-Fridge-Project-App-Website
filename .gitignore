@@ -35,6 +35,9 @@ Thumbs.db
 *.swp
 *.swo
 
+# ─── Claude Code (local only — personal settings, not for commit) ──
+.claude/settings.local.json
+
 # ─── Temp files ────────────────────────────────────────────────────
 ~$*
 *.tmp
