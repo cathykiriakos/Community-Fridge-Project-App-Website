@@ -2,6 +2,5 @@
 # Install with:  pip install -r requirements.txt
 
 streamlit>=1.35.0        # web app framework
-psycopg2-binary>=2.9.9   # PostgreSQL driver (works with Supabase)
+supabase>=2.0.0          # Supabase Python client (REST API)
 pandas>=2.0.0            # data manipulation
-python-dotenv>=1.0.0     # load DATABASE_URL from a local .env file
