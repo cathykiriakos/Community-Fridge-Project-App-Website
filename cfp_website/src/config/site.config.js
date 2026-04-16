@@ -39,7 +39,7 @@ export const BRAND = {
   tagline: 'Free Food for All Neighbors',
   domain: 'communityfridgeproject.org',
   url: 'https://communityfridgeproject.org',
-  email: 'hello@communityfridgeproject.org',
+  email: 'communityfridgeproject@gmail.com',
   phone: '',
   location: 'Oak Park, IL & Austin Neighborhood, Chicago, IL',
   socialMedia: {

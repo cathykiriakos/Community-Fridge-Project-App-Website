@@ -895,7 +895,7 @@ function PagesTab({ content, onChange }) {
           <div className="mt-5 space-y-4">
             <Field label="Page Headline" k="contactHeadline" placeholder="Get in Touch" />
             <Field label="Intro Paragraph" k="contactIntro" type="textarea" rows={3} />
-            <Field label="Email Address" k="contactEmail" placeholder="hello@communityfridgeproject.org" />
+            <Field label="Email Address" k="contactEmail" placeholder="communityfridgeproject@gmail.com" />
             <Field label="Response Time Note" k="contactResponse"
               placeholder="We typically respond within 2 business days." />
           </div>

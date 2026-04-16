@@ -19,8 +19,9 @@ function FooterHeart() {
 }
 
 export default function Footer() {
-  const { fridges } = useContent()
+  const { fridges, pages } = useContent()
   const year = new Date().getFullYear()
+  const email = pages.contactEmail || BRAND.email
 
   return (
     <footer className="bg-gray-900 text-gray-300">
@@ -44,14 +45,14 @@ export default function Footer() {
               and the Austin neighborhood of Chicago.
               Free food, always available, no questions asked.
             </p>
-            {BRAND.email && (
+            {email && (
               <a
-                href={`mailto:${BRAND.email}`}
+                href={`mailto:${email}`}
                 className="inline-flex items-center gap-2 mt-4 text-brand-400 hover:text-brand-300
                            text-sm font-medium transition-colors"
               >
                 <Mail size={15} />
-                {BRAND.email}
+                {email}
               </a>
             )}
           </div>
