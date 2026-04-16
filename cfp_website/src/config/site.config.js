@@ -302,7 +302,7 @@ export const DONATE = {
     'Baby food and formula',
   ],
   dropoffNote: 'Drop off at any of our 5 fridge locations in Oak Park, IL or Austin Chicago — no appointment needed.',
-  paymentLink: '',
+  paymentLink: 'https://www.paypal.com/donate?token=euPabnhIunjsHTQN3OEVT9Ju3Y8R9a983s_JNk1Kh5fIXsM-ztDIFpoKJh3dPRkLJKwwsHSMZiLbDJg-&fbclid=IwT01FWARMxgdleHRuA2FlbQIxMABzcnRjBmFwcF9pZAwzNTA2ODU1MzE3MjgAAR62gFMaufPNay1eusdHdHVkN6q0WX3xE8hWTPreyVn09cExNDZBKl2pI3zceg_aem_jePk0i92M0YAXVPDXRiWDw',
 }
 
 // ─── CONTACT PAGE ────────────────────────────────────────────────────────────
