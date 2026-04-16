@@ -62,10 +62,13 @@ export default function Donate() {
                   href={DONATE.paymentLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn-primary w-full justify-center text-base py-4"
+                  className="inline-block"
                 >
-                  <Heart size={18} />
-                  Donate Now
+                  <img
+                    src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif"
+                    alt="Donate with PayPal"
+                    border="0"
+                  />
                 </a>
               ) : (
                 <div className="bg-brand-50 border border-brand-200 rounded-xl p-5 text-center">

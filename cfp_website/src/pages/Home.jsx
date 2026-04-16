@@ -20,13 +20,12 @@ export default function Home() {
     <>
       {/* ── HERO BANNER ───────────────────────────────────────────── */}
       <section aria-label="Hero banner" className="relative overflow-hidden">
-        {/* Full-width banner image */}
+        {/* Full-width banner image — natural proportions, nothing cropped */}
         <div className="w-full bg-[#e3e956]">
           <img
             src="/images/cfp-banner.png"
             alt="Community Fridge Project — Neighbors Feeding Neighbors"
-            className="w-full object-cover max-h-[420px]"
-            style={{ objectPosition: 'center center' }}
+            className="w-full h-auto block"
           />
         </div>
 
