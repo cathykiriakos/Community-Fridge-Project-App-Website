@@ -57,32 +57,32 @@ export default function Donate() {
                 ))}
               </div>
 
-              {DONATE.paymentLink ? (
+              <div className="bg-brand-50 border-2 border-brand-300 rounded-2xl p-6 text-center">
+                <div className="flex justify-center mb-3">
+                  <img
+                    src="/images/coc-logo.png"
+                    alt="Community of Congregations"
+                    className="h-12 w-auto object-contain"
+                    onError={e => { e.currentTarget.style.display = 'none' }}
+                  />
+                </div>
+                <p className="text-brand-800 font-bold text-base mb-1">
+                  Donate through the Community of Congregations
+                </p>
+                <p className="text-gray-600 text-sm mb-5 leading-relaxed">
+                  Financial donations are processed securely through our parent organization,
+                  Community of Congregations.
+                </p>
                 <a
-                  href={DONATE.paymentLink}
+                  href="https://www.communityofcongregations.org/give/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-block"
+                  className="btn-primary text-base px-8 py-3 inline-flex items-center gap-2"
                 >
-                  <img
-                    src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif"
-                    alt="Donate with PayPal"
-                    border="0"
-                  />
+                  <Heart size={18} />
+                  Donate on the CoC Website
                 </a>
-              ) : (
-                <div className="bg-brand-50 border border-brand-200 rounded-xl p-5 text-center">
-                  <p className="text-brand-700 font-semibold text-sm">
-                    💳 Online payment link coming soon!
-                  </p>
-                  <p className="text-gray-500 text-sm mt-1">
-                    In the meantime, reach out directly to donate.
-                  </p>
-                  <Link to="/contact" className="btn-primary mt-4 text-sm px-6 py-2.5 inline-flex">
-                    Contact Us
-                  </Link>
-                </div>
-              )}
+              </div>
             </div>
 
             {/* Food donations */}

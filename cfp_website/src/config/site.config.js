@@ -54,7 +54,7 @@ export const BRAND = {
 export const NAV_LINKS = [
   { label: 'Home',       path: '/' },
   { label: 'About Us',   path: '/about' },
-  { label: 'Volunteer',  path: '/volunteer' },
+  { label: 'Volunteer 🖐️', path: '/volunteer' },
   { label: 'Donate',     path: '/donate' },
   { label: 'News',       path: '/news' },
   { label: 'Contact',    path: '/contact' },
@@ -142,6 +142,21 @@ export const FRIDGE_LOCATIONS = [
     address: '409 Greenfield St, Oak Park, IL',
     mapsUrl: 'https://maps.google.com/?q=409+Greenfield+St,+Oak+Park,+IL',
   },
+]
+
+// ─── COMMUNITY PARTNERS ──────────────────────────────────────────────────────
+// Edit here or manage via Admin portal → Community Partners tab.
+export const COMMUNITY_PARTNERS = [
+  'Alcuin Montessori School',
+  'Austin Harvest',
+  'Catholic Communities of Oak Park',
+  'Dark Matter Coffee',
+  'District 97',
+  'Happy Apple Pie Shop',
+  'Publican Quality Bread Oak Park',
+  "Robert's Westside",
+  'Take Out 25',
+  'Tovala',
 ]
 
 // ─── VOLUNTEER SLOTS ─────────────────────────────────────────────────────────

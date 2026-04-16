@@ -95,6 +95,22 @@ export default function Footer() {
         </div>
       </div>
 
+      {/* ─── COC AFFILIATION BAR ─────────────────────────────── */}
+      <div className="border-t border-gray-800 bg-gray-900">
+        <div className="section-container py-5 flex flex-col sm:flex-row items-center
+                        justify-center gap-3 text-xs text-gray-500">
+          <img
+            src="/images/coc-logo.png"
+            alt="Community of Congregations"
+            className="h-8 w-auto object-contain opacity-70 hover:opacity-90 transition-opacity"
+            onError={e => { e.currentTarget.style.display = 'none' }}
+          />
+          <span className="text-gray-500">
+            A project of <span className="text-gray-400 font-medium">Community of Congregations</span>, Oak Park · River Forest
+          </span>
+        </div>
+      </div>
+
       {/* ─── BOTTOM BAR ──────────────────────────────────────── */}
       <div className="border-t border-gray-800">
         <div className="section-container py-5 flex flex-col sm:flex-row items-center

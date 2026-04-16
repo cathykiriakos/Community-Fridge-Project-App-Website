@@ -1,27 +1,25 @@
 import { Link } from 'react-router-dom'
-import { ArrowRight, Heart, Users, DollarSign } from 'lucide-react'
+import { ArrowRight, Heart, Users, DollarSign, MapPin } from 'lucide-react'
 import { HOME } from '../config/site.config'
 import { useContent } from '../hooks/useContent'
 import { PageWithSidebar } from '../components/PageImageSidebar'
-import VolunteerDashboard from '../components/VolunteerDashboard'
 
 // ─── HOME PAGE ────────────────────────────────────────────────────────────────
 export default function Home() {
-  const { pages, images } = useContent()
+  const { pages, images, fridges, partners } = useContent()
 
   const stats = [
-    { value: pages.stat0, label: pages.stat0Label },
-    { value: pages.stat1, label: pages.stat1Label },
-    { value: pages.stat2, label: pages.stat2Label },
-    { value: pages.stat3, label: pages.stat3Label },
+    { value: pages.stat0, label: pages.stat0Label, anchor: '#fridges' },
+    { value: pages.stat1, label: pages.stat1Label, anchor: null },
+    { value: pages.stat3, label: pages.stat3Label, anchor: null },
   ]
 
   return (
     <>
       {/* ── HERO BANNER ───────────────────────────────────────────── */}
       <section aria-label="Hero banner" className="relative overflow-hidden">
-        {/* Full-width banner image — natural proportions, nothing cropped */}
-        <div className="w-full bg-[#e3e956]">
+        {/* Full-width banner image */}
+        <div className="w-full bg-[#e3e956] overflow-hidden leading-none">
           <img
             src="/images/cfp-banner.png"
             alt="Community Fridge Project — Neighbors Feeding Neighbors"
@@ -58,12 +56,66 @@ export default function Home() {
       {/* ── IMPACT STATS ──────────────────────────────────────────── */}
       <section className="bg-white border-b border-gray-100" aria-label="Impact statistics">
         <div className="section-container py-10 md:py-14">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 text-center">
-            {stats.map((stat, i) => (
-              <div key={i}>
-                <p className="text-3xl md:text-4xl font-extrabold text-brand-600 mb-1">{stat.value}</p>
-                <p className="text-sm md:text-base text-gray-500 font-medium">{stat.label}</p>
-              </div>
+          <div className="grid grid-cols-3 gap-6 md:gap-8 text-center">
+            {stats.map((stat, i) =>
+              stat.anchor ? (
+                <a key={i} href={stat.anchor}
+                   className="group cursor-pointer">
+                  <p className="text-3xl md:text-4xl font-extrabold text-brand-600 mb-1
+                                group-hover:text-brand-700 transition-colors">
+                    {stat.value}
+                  </p>
+                  <p className="text-sm md:text-base text-gray-500 font-medium
+                                group-hover:text-brand-600 transition-colors underline-offset-2
+                                group-hover:underline">
+                    {stat.label}
+                  </p>
+                </a>
+              ) : (
+                <div key={i}>
+                  <p className="text-3xl md:text-4xl font-extrabold text-brand-600 mb-1">{stat.value}</p>
+                  <p className="text-sm md:text-base text-gray-500 font-medium">{stat.label}</p>
+                </div>
+              )
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* ── FRIDGE LOCATIONS ──────────────────────────────────────── */}
+      <section id="fridges" className="bg-neutral-50 border-b border-gray-200 py-10 md:py-14"
+               aria-labelledby="fridges-heading">
+        <div className="section-container">
+          <div className="text-center mb-8">
+            <span className="badge-green mb-4">Find a Fridge</span>
+            <h2 id="fridges-heading" className="text-2xl md:text-3xl font-extrabold text-gray-900">
+              Fridge Locations
+            </h2>
+            <p className="text-gray-500 mt-2 text-base max-w-xl mx-auto">
+              All fridges are open 24/7. Tap any location to get directions.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 max-w-5xl mx-auto">
+            {fridges.map((fridge) => (
+              <a
+                key={fridge.id}
+                href={fridge.mapsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-start gap-3 p-4 rounded-xl border border-gray-200 bg-white
+                           hover:border-brand-400 hover:shadow-md transition-all group"
+              >
+                <MapPin size={20} className="text-brand-500 flex-shrink-0 mt-0.5 group-hover:text-brand-600" />
+                <div>
+                  <p className="font-semibold text-gray-900 text-sm group-hover:text-brand-700 leading-snug">
+                    {fridge.name}
+                  </p>
+                  <p className="text-xs text-gray-500 mt-0.5">{fridge.address}</p>
+                  <p className="text-xs text-brand-500 mt-1.5 font-medium">
+                    View on Google Maps →
+                  </p>
+                </div>
+              </a>
             ))}
           </div>
         </div>
@@ -72,8 +124,26 @@ export default function Home() {
       {/* ── REMAINING PAGE CONTENT WRAPPED WITH SIDEBAR ───────────── */}
       <PageWithSidebar images={images.home}>
 
+        {/* ── COC AFFILIATION ───────────────────────────────────── */}
+        <section className="bg-brand-50 border-b border-brand-100 py-6" aria-label="Organizational affiliation">
+          <div className="section-container flex flex-col sm:flex-row items-center justify-center gap-4 text-center sm:text-left">
+            <img
+              src="/images/coc-logo.png"
+              alt="Community of Congregations"
+              className="h-14 w-auto object-contain flex-shrink-0"
+              onError={e => { e.currentTarget.style.display = 'none' }}
+            />
+            <div>
+              <p className="text-brand-800 font-bold text-base">
+                A Project of Community of Congregations
+              </p>
+              <p className="text-brand-600 text-sm">Oak Park · River Forest</p>
+            </div>
+          </div>
+        </section>
+
         {/* ── MISSION STATEMENT ─────────────────────────────────── */}
-        <section className="section-py bg-neutral-50" aria-labelledby="mission-heading">
+        <section className="section-py bg-white" aria-labelledby="mission-heading">
           <div className="section-container">
             <div className="max-w-3xl mx-auto text-center">
               <span className="badge-green mb-4">Our Mission</span>
@@ -84,7 +154,7 @@ export default function Home() {
         </section>
 
         {/* ── HOW IT WORKS ──────────────────────────────────────── */}
-        <section className="section-py bg-white" aria-labelledby="how-heading">
+        <section className="section-py bg-neutral-50" aria-labelledby="how-heading">
           <div className="section-container">
             <div className="text-center mb-12">
               <span className="badge-green mb-4">Simple &amp; Open</span>
@@ -102,25 +172,32 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ── VOLUNTEER DASHBOARD PREVIEW ───────────────────────── */}
-        <section className="section-py bg-neutral-50" aria-labelledby="dashboard-preview-heading">
-          <div className="section-container">
-            <div className="text-center mb-12">
-              <span className="badge-green mb-4">Real-Time Needs</span>
-              <h2 id="dashboard-preview-heading">Volunteer Opportunities</h2>
-              <p className="text-gray-500 mt-3 text-lg max-w-2xl mx-auto">
-                See where help is needed most this week. Spots fill fast!
-              </p>
+        {/* ── COMMUNITY PARTNERS ────────────────────────────────── */}
+        {partners && partners.length > 0 && (
+          <section className="section-py bg-white" aria-labelledby="partners-heading">
+            <div className="section-container">
+              <div className="text-center mb-8">
+                <span className="badge-green mb-4">Community Partners</span>
+                <h2 id="partners-heading">Thank You to Our Partners</h2>
+                <p className="text-gray-500 mt-3 text-lg max-w-2xl mx-auto">
+                  These local organizations help make our work possible.
+                </p>
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 max-w-5xl mx-auto">
+                {partners.map((partner, i) => (
+                  <div
+                    key={i}
+                    className="bg-neutral-50 border border-gray-200 rounded-xl px-3 py-3
+                               text-center shadow-sm hover:border-brand-300 hover:bg-brand-50
+                               transition-all"
+                  >
+                    <p className="text-sm font-semibold text-gray-700 leading-snug">{partner}</p>
+                  </div>
+                ))}
+              </div>
             </div>
-            <VolunteerDashboard previewMode={true} />
-            <div className="text-center mt-10">
-              <Link to="/volunteer" className="btn-primary text-base px-8 py-4">
-                View All Opportunities
-                <ArrowRight size={18} />
-              </Link>
-            </div>
-          </div>
-        </section>
+          </section>
+        )}
 
         {/* ── GET INVOLVED CTA ──────────────────────────────────── */}
         <section className="bg-brand-600 text-white section-py" aria-labelledby="cta-heading">
@@ -136,7 +213,7 @@ export default function Home() {
                              font-bold text-center transition-all duration-200 hover:shadow-lg
                              flex flex-col items-center gap-3">
                   <Users size={32} className="text-brand-500" />
-                  <span>Volunteer</span>
+                  <span>Volunteer 🖐️</span>
                 </Link>
                 <Link to="/donate"
                   className="bg-white text-brand-600 hover:bg-brand-50 rounded-xl p-6

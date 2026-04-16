@@ -12,7 +12,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import {
-  LogIn, LogOut, Newspaper, Users, FileText, BarChart2,
+  LogIn, LogOut, Newspaper, Users, FileText, BarChart2, Heart,
   Plus, Trash2, Edit3, Eye, EyeOff, Save, CheckCircle,
   AlertTriangle, ArrowLeft, Settings, MapPin, RefreshCw,
   ExternalLink, Image, Upload, GripVertical,
@@ -20,7 +20,7 @@ import {
   Calendar, Check,
 } from 'lucide-react'
 import {
-  ADMIN_CONFIG, VOLUNTEER_SLOTS, DEFAULT_NEWS, FRIDGE_LOCATIONS,
+  ADMIN_CONFIG, VOLUNTEER_SLOTS, DEFAULT_NEWS, FRIDGE_LOCATIONS, COMMUNITY_PARTNERS,
 } from '../config/site.config'
 import { DEFAULT_PAGES, DEFAULT_IMAGES } from '../hooks/useContent'
 import { supabase } from '../lib/supabase'
@@ -36,17 +36,19 @@ function loadContent() {
         news:    parsed.news    ?? [...DEFAULT_NEWS],
         slots:   parsed.slots   ?? VOLUNTEER_SLOTS.map(s => ({ ...s })),
         fridges: parsed.fridges ?? FRIDGE_LOCATIONS.map(f => ({ ...f })),
-        pages:   { ...DEFAULT_PAGES, ...(parsed.pages ?? {}) },
-        images:  { ...DEFAULT_IMAGES, ...(parsed.images ?? {}) },
+        pages:    { ...DEFAULT_PAGES, ...(parsed.pages ?? {}) },
+        images:   { ...DEFAULT_IMAGES, ...(parsed.images ?? {}) },
+        partners: parsed.partners ?? [...COMMUNITY_PARTNERS],
       }
     }
   } catch (_) {}
   return {
-    news:    [...DEFAULT_NEWS],
-    slots:   VOLUNTEER_SLOTS.map(s => ({ ...s })),
-    fridges: FRIDGE_LOCATIONS.map(f => ({ ...f })),
-    pages:   { ...DEFAULT_PAGES },
-    images:  { ...DEFAULT_IMAGES },
+    news:     [...DEFAULT_NEWS],
+    slots:    VOLUNTEER_SLOTS.map(s => ({ ...s })),
+    fridges:  FRIDGE_LOCATIONS.map(f => ({ ...f })),
+    pages:    { ...DEFAULT_PAGES },
+    images:   { ...DEFAULT_IMAGES },
+    partners: [...COMMUNITY_PARTNERS],
   }
 }
 
@@ -175,6 +177,7 @@ const ADMIN_TABS = [
   { id: 'fridges',   label: 'Fridge Locations',  icon: MapPin },
   { id: 'images',    label: 'Page Images',        icon: Image },
   { id: 'pages',     label: 'Page Content',      icon: FileText },
+  { id: 'partners',  label: 'Community Partners', icon: Heart },
 ]
 
 function AdminNav({ activeTab, onTab, onLogout }) {
@@ -1911,6 +1914,116 @@ function SchedulingTab() {
   )
 }
 
+// ─── COMMUNITY PARTNERS TAB ───────────────────────────────────────────────────
+function PartnersTab({ content, onChange }) {
+  const [newName, setNewName] = useState('')
+  const partners = content.partners ?? []
+
+  const handleAdd = () => {
+    const trimmed = newName.trim()
+    if (!trimmed) return
+    onChange({ ...content, partners: [...partners, trimmed] })
+    setNewName('')
+  }
+
+  const handleDelete = (i) => {
+    onChange({ ...content, partners: partners.filter((_, idx) => idx !== i) })
+  }
+
+  const handleMoveUp = (i) => {
+    if (i === 0) return
+    const next = [...partners]
+    ;[next[i - 1], next[i]] = [next[i], next[i - 1]]
+    onChange({ ...content, partners: next })
+  }
+
+  const handleMoveDown = (i) => {
+    if (i === partners.length - 1) return
+    const next = [...partners]
+    ;[next[i], next[i + 1]] = [next[i + 1], next[i]]
+    onChange({ ...content, partners: next })
+  }
+
+  const handleReset = () => {
+    if (!window.confirm('Reset partners to the original defaults?')) return
+    onChange({ ...content, partners: [...COMMUNITY_PARTNERS] })
+  }
+
+  return (
+    <div>
+      <div className="flex items-center justify-between mb-2">
+        <h2 className="text-2xl font-bold text-gray-900">Community Partners</h2>
+        <button onClick={handleReset}
+          className="btn-secondary text-sm px-3 py-2 flex items-center gap-1.5">
+          <RefreshCw size={13} /> Reset Defaults
+        </button>
+      </div>
+      <p className="text-gray-500 text-sm mb-6">
+        Partners appear prominently on the Home page. Changes save automatically.
+      </p>
+
+      {/* Add new partner */}
+      <div className="card mb-6 border-brand-300 bg-brand-50/30">
+        <h3 className="font-bold text-base mb-3 text-gray-900">Add Partner</h3>
+        <div className="flex gap-2">
+          <input
+            type="text"
+            value={newName}
+            onChange={e => setNewName(e.target.value)}
+            onKeyDown={e => e.key === 'Enter' && handleAdd()}
+            placeholder="e.g. Acme Community Bakery"
+            className="form-input flex-1"
+          />
+          <button onClick={handleAdd} disabled={!newName.trim()}
+            className="btn-primary text-sm px-4 py-2 disabled:opacity-50 flex-shrink-0">
+            <Plus size={15} /> Add
+          </button>
+        </div>
+      </div>
+
+      {/* Partner list */}
+      <div className="space-y-2">
+        {partners.length === 0 && (
+          <p className="text-gray-400 text-sm text-center py-10">
+            No partners yet. Add one above!
+          </p>
+        )}
+        {partners.map((name, i) => (
+          <div key={i}
+               className="flex items-center gap-3 p-3 rounded-xl border border-gray-200 bg-white">
+            <Heart size={16} className="text-brand-400 flex-shrink-0" />
+            <span className="flex-1 text-sm font-semibold text-gray-800">{name}</span>
+            <div className="flex items-center gap-1 flex-shrink-0">
+              <button onClick={() => handleMoveUp(i)} disabled={i === 0} title="Move up"
+                      className="p-1.5 rounded text-gray-400 hover:text-brand-600 hover:bg-brand-50
+                                 disabled:opacity-30 transition-all text-xs">
+                ▲
+              </button>
+              <button onClick={() => handleMoveDown(i)} disabled={i === partners.length - 1}
+                      title="Move down"
+                      className="p-1.5 rounded text-gray-400 hover:text-brand-600 hover:bg-brand-50
+                                 disabled:opacity-30 transition-all text-xs">
+                ▼
+              </button>
+              <button onClick={() => handleDelete(i)} title="Remove"
+                      className="p-1.5 rounded text-gray-400 hover:text-red-500 hover:bg-red-50
+                                 transition-all">
+                <Trash2 size={15} />
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {partners.length > 0 && (
+        <p className="text-xs text-gray-400 mt-4 text-right">
+          {partners.length} partner{partners.length !== 1 ? 's' : ''} listed
+        </p>
+      )}
+    </div>
+  )
+}
+
 // ─── ADMIN PORTAL (main export) ───────────────────────────────────────────────
 export default function Admin() {
   const [authed, setAuthed]   = useState(
@@ -1959,6 +2072,7 @@ export default function Admin() {
         {activeTab === 'fridges'   && <FridgesTab   content={content} onChange={setContent} />}
         {activeTab === 'images'    && <ImagesTab    content={content} onChange={setContent} />}
         {activeTab === 'pages'     && <PagesTab     content={content} onChange={setContent} />}
+        {activeTab === 'partners'  && <PartnersTab  content={content} onChange={setContent} />}
       </main>
     </div>
   )

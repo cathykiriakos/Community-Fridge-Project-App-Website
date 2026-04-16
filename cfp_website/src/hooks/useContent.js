@@ -24,6 +24,7 @@ import {
   FRIDGE_LOCATIONS,
   VOLUNTEER_SLOTS,
   DEFAULT_NEWS,
+  COMMUNITY_PARTNERS,
   getImpactStats,
 } from '../config/site.config'
 
@@ -90,11 +91,12 @@ export function useContent() {
   const [data, setData] = useState(() => {
     const stored = loadFromStorage()
     return {
-      pages:   stored?.pages   ?? { ...DEFAULT_PAGES },
-      fridges: stored?.fridges ?? [...FRIDGE_LOCATIONS],
-      slots:   stored?.slots   ?? [...VOLUNTEER_SLOTS],
-      news:    stored?.news    ?? [...DEFAULT_NEWS],
-      images:  stored?.images  ?? { ...DEFAULT_IMAGES },
+      pages:    stored?.pages    ?? { ...DEFAULT_PAGES },
+      fridges:  stored?.fridges  ?? [...FRIDGE_LOCATIONS],
+      slots:    stored?.slots    ?? [...VOLUNTEER_SLOTS],
+      news:     stored?.news     ?? [...DEFAULT_NEWS],
+      images:   stored?.images   ?? { ...DEFAULT_IMAGES },
+      partners: stored?.partners ?? [...COMMUNITY_PARTNERS],
     }
   })
 
@@ -119,11 +121,12 @@ export function useContent() {
       const stored = loadFromStorage()
       if (stored) {
         setData({
-          pages:   { ...DEFAULT_PAGES, ...(stored.pages ?? {}) },
-          fridges: stored.fridges ?? [...FRIDGE_LOCATIONS],
-          slots:   stored.slots   ?? [...VOLUNTEER_SLOTS],
-          news:    stored.news    ?? [...DEFAULT_NEWS],
-          images:  { ...DEFAULT_IMAGES, ...(stored.images ?? {}) },
+          pages:    { ...DEFAULT_PAGES, ...(stored.pages ?? {}) },
+          fridges:  stored.fridges  ?? [...FRIDGE_LOCATIONS],
+          slots:    stored.slots    ?? [...VOLUNTEER_SLOTS],
+          news:     stored.news     ?? [...DEFAULT_NEWS],
+          images:   { ...DEFAULT_IMAGES, ...(stored.images ?? {}) },
+          partners: stored.partners ?? [...COMMUNITY_PARTNERS],
         })
       }
     }
