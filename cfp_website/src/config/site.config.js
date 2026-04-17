@@ -52,12 +52,11 @@ export const BRAND = {
 
 // ─── NAVIGATION ─────────────────────────────────────────────────────────────
 export const NAV_LINKS = [
-  { label: 'Home',       path: '/' },
-  { label: 'About Us',   path: '/about' },
-  { label: 'Volunteer 🖐️', path: '/volunteer' },
-  { label: 'Donate',     path: '/donate' },
-  { label: 'News',       path: '/news' },
-  { label: 'Contact',    path: '/contact' },
+  { label: 'Home',     path: '/' },
+  { label: 'About Us', path: '/about' },
+  { label: 'Donate',   path: '/donate' },
+  { label: 'News',     path: '/news' },
+  { label: 'Contact',  path: '/contact' },
 ]
 
 // ─── HOME PAGE ───────────────────────────────────────────────────────────────
