@@ -44,7 +44,7 @@ export const BRAND = {
   location: 'Oak Park, IL & Austin Neighborhood, Chicago, IL',
   socialMedia: {
     instagram: '',
-    facebook: 'https://www.facebook.com/communityfridgeproject',
+    facebook: 'https://www.facebook.com/groups/651337611048675/',
     twitter: '',
   },
   primaryColor: '#3BAA35',
