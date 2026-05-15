@@ -124,7 +124,7 @@ export const FRIDGE_LOCATIONS = [
   },
   {
     id: 3,
-    name: '607 Harvard Street',
+    name: '607 Harvard St',
     neighborhood: 'Oak Park, IL',
     address: '607 Harvard St, Oak Park, IL',
     amenities: 'Fridge/pantry',
