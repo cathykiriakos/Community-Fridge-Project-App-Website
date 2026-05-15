@@ -47,6 +47,31 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── COC AFFILIATION ───────────────────────────────────────── */}
+      <section className="bg-brand-50 border-b border-brand-100 py-6" aria-label="Organizational affiliation">
+        <div className="section-container flex flex-col sm:flex-row items-center justify-center gap-4 text-center sm:text-left">
+          <a
+            href="https://www.communityofcongregations.org"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex flex-col sm:flex-row items-center gap-4 hover:opacity-80 transition-opacity"
+          >
+            <img
+              src="/images/coc-logo.png"
+              alt="Community of Congregations"
+              className="h-14 w-auto object-contain flex-shrink-0"
+              onError={e => { e.currentTarget.style.display = 'none' }}
+            />
+            <div>
+              <p className="text-brand-800 font-bold text-base">
+                A Project of Community of Congregations
+              </p>
+              <p className="text-brand-600 text-sm">Oak Park · River Forest</p>
+            </div>
+          </a>
+        </div>
+      </section>
+
       {/* ── FRIDGE LOCATIONS ──────────────────────────────────────── */}
       <section id="fridges" className="bg-neutral-50 border-b border-gray-200 py-10 md:py-14"
                aria-labelledby="fridges-heading">
@@ -91,31 +116,6 @@ export default function Home() {
 
       {/* ── REMAINING PAGE CONTENT WRAPPED WITH SIDEBAR ───────────── */}
       <PageWithSidebar images={images.home}>
-
-        {/* ── COC AFFILIATION ───────────────────────────────────── */}
-        <section className="bg-brand-50 border-b border-brand-100 py-6" aria-label="Organizational affiliation">
-          <div className="section-container flex flex-col sm:flex-row items-center justify-center gap-4 text-center sm:text-left">
-            <a
-              href="https://www.communityofcongregations.org"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex flex-col sm:flex-row items-center gap-4 hover:opacity-80 transition-opacity"
-            >
-              <img
-                src="/images/coc-logo.png"
-                alt="Community of Congregations"
-                className="h-14 w-auto object-contain flex-shrink-0"
-                onError={e => { e.currentTarget.style.display = 'none' }}
-              />
-              <div>
-                <p className="text-brand-800 font-bold text-base">
-                  A Project of Community of Congregations
-                </p>
-                <p className="text-brand-600 text-sm">Oak Park · River Forest</p>
-              </div>
-            </a>
-          </div>
-        </section>
 
         {/* ── MISSION STATEMENT ─────────────────────────────────── */}
         <section className="section-py bg-white" aria-labelledby="mission-heading">
