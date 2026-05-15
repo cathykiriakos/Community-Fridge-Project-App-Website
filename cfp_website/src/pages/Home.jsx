@@ -66,7 +66,7 @@ export default function Home() {
               <p className="text-brand-800 font-bold text-base">
                 A Project of Community of Congregations
               </p>
-              <p className="text-brand-600 text-sm">Oak Park · River Forest</p>
+              <p className="text-brand-600 text-sm">Oak Park · River Forest · 501(c)(3) Nonprofit</p>
             </div>
           </a>
         </div>
