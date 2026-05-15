@@ -5,7 +5,7 @@ import { useContent } from '../hooks/useContent'
 import { PageWithSidebar } from '../components/PageImageSidebar'
 
 export default function About() {
-  const { pages, fridges, images } = useContent()
+  const { pages, fridges, images, partners } = useContent()
 
   return (
     <>
@@ -109,6 +109,9 @@ export default function About() {
                     <h4 className="font-bold text-gray-900">{loc.name}</h4>
                     <p className="text-sm text-brand-600 font-medium">{loc.neighborhood}</p>
                     <p className="text-xs text-gray-500 mt-1">{loc.address}</p>
+                    {loc.amenities && (
+                      <p className="text-xs text-brand-600 font-medium mt-0.5">{loc.amenities}</p>
+                    )}
                     <div className="flex items-center gap-3 mt-2 flex-wrap">
                       <span className="badge-green text-xs">Open 24/7</span>
                       {loc.mapsUrl && (
@@ -130,6 +133,33 @@ export default function About() {
           </div>
         </div>
       </section>
+
+      {/* ── COMMUNITY PARTNERS ──────────────────────────────────────── */}
+      {partners && partners.length > 0 && (
+        <section className="section-py bg-white" aria-labelledby="partners-heading">
+          <div className="section-container">
+            <div className="text-center mb-8">
+              <span className="badge-green mb-4">Community Partners</span>
+              <h2 id="partners-heading">Thank You to Our Partners</h2>
+              <p className="text-gray-500 mt-3 text-lg max-w-2xl mx-auto">
+                These local organizations help make our work possible.
+              </p>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 max-w-5xl mx-auto">
+              {partners.map((partner, i) => (
+                <div
+                  key={i}
+                  className="bg-neutral-50 border border-gray-200 rounded-xl px-3 py-3
+                             text-center shadow-sm hover:border-brand-300 hover:bg-brand-50
+                             transition-all"
+                >
+                  <p className="text-sm font-semibold text-gray-700 leading-snug">{partner}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* ── JOIN CTA ─────────────────────────────────────────────────── */}
       <section className="bg-brand-600 text-white section-py">

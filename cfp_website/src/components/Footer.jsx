@@ -99,15 +99,22 @@ export default function Footer() {
       <div className="border-t border-gray-800 bg-gray-900">
         <div className="section-container py-5 flex flex-col sm:flex-row items-center
                         justify-center gap-3 text-xs text-gray-500">
-          <img
-            src="/images/coc-logo.png"
-            alt="Community of Congregations"
-            className="h-8 w-auto object-contain opacity-70 hover:opacity-90 transition-opacity"
-            onError={e => { e.currentTarget.style.display = 'none' }}
-          />
-          <span className="text-gray-500">
-            A project of <span className="text-gray-400 font-medium">Community of Congregations</span>, Oak Park · River Forest
-          </span>
+          <a
+            href="https://www.communityofcongregations.org"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex flex-col sm:flex-row items-center gap-3 hover:opacity-80 transition-opacity"
+          >
+            <img
+              src="/images/coc-logo.png"
+              alt="Community of Congregations"
+              className="h-8 w-auto object-contain opacity-70 hover:opacity-90 transition-opacity"
+              onError={e => { e.currentTarget.style.display = 'none' }}
+            />
+            <span className="text-gray-500">
+              A project of <span className="text-gray-400 font-medium">Community of Congregations</span>, Oak Park · River Forest
+            </span>
+          </a>
         </div>
       </div>
 

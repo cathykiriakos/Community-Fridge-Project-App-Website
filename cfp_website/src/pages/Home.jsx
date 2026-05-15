@@ -6,13 +6,7 @@ import { PageWithSidebar } from '../components/PageImageSidebar'
 
 // ─── HOME PAGE ────────────────────────────────────────────────────────────────
 export default function Home() {
-  const { pages, images, fridges, partners } = useContent()
-
-  const stats = [
-    { value: pages.stat0, label: pages.stat0Label, anchor: '#fridges' },
-    { value: pages.stat1, label: pages.stat1Label, anchor: null },
-    { value: pages.stat3, label: pages.stat3Label, anchor: null },
-  ]
+  const { pages, images, fridges } = useContent()
 
   return (
     <>
@@ -53,35 +47,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── IMPACT STATS ──────────────────────────────────────────── */}
-      <section className="bg-white border-b border-gray-100" aria-label="Impact statistics">
-        <div className="section-container py-10 md:py-14">
-          <div className="grid grid-cols-3 gap-6 md:gap-8 text-center">
-            {stats.map((stat, i) =>
-              stat.anchor ? (
-                <a key={i} href={stat.anchor}
-                   className="group cursor-pointer">
-                  <p className="text-3xl md:text-4xl font-extrabold text-brand-600 mb-1
-                                group-hover:text-brand-700 transition-colors">
-                    {stat.value}
-                  </p>
-                  <p className="text-sm md:text-base text-gray-500 font-medium
-                                group-hover:text-brand-600 transition-colors underline-offset-2
-                                group-hover:underline">
-                    {stat.label}
-                  </p>
-                </a>
-              ) : (
-                <div key={i}>
-                  <p className="text-3xl md:text-4xl font-extrabold text-brand-600 mb-1">{stat.value}</p>
-                  <p className="text-sm md:text-base text-gray-500 font-medium">{stat.label}</p>
-                </div>
-              )
-            )}
-          </div>
-        </div>
-      </section>
-
       {/* ── FRIDGE LOCATIONS ──────────────────────────────────────── */}
       <section id="fridges" className="bg-neutral-50 border-b border-gray-200 py-10 md:py-14"
                aria-labelledby="fridges-heading">
@@ -111,6 +76,9 @@ export default function Home() {
                     {fridge.name}
                   </p>
                   <p className="text-xs text-gray-500 mt-0.5">{fridge.address}</p>
+                  {fridge.amenities && (
+                    <p className="text-xs text-brand-600 font-medium mt-0.5">{fridge.amenities}</p>
+                  )}
                   <p className="text-xs text-brand-500 mt-1.5 font-medium">
                     View on Google Maps →
                   </p>
@@ -127,18 +95,25 @@ export default function Home() {
         {/* ── COC AFFILIATION ───────────────────────────────────── */}
         <section className="bg-brand-50 border-b border-brand-100 py-6" aria-label="Organizational affiliation">
           <div className="section-container flex flex-col sm:flex-row items-center justify-center gap-4 text-center sm:text-left">
-            <img
-              src="/images/coc-logo.png"
-              alt="Community of Congregations"
-              className="h-14 w-auto object-contain flex-shrink-0"
-              onError={e => { e.currentTarget.style.display = 'none' }}
-            />
-            <div>
-              <p className="text-brand-800 font-bold text-base">
-                A Project of Community of Congregations
-              </p>
-              <p className="text-brand-600 text-sm">Oak Park · River Forest</p>
-            </div>
+            <a
+              href="https://www.communityofcongregations.org"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex flex-col sm:flex-row items-center gap-4 hover:opacity-80 transition-opacity"
+            >
+              <img
+                src="/images/coc-logo.png"
+                alt="Community of Congregations"
+                className="h-14 w-auto object-contain flex-shrink-0"
+                onError={e => { e.currentTarget.style.display = 'none' }}
+              />
+              <div>
+                <p className="text-brand-800 font-bold text-base">
+                  A Project of Community of Congregations
+                </p>
+                <p className="text-brand-600 text-sm">Oak Park · River Forest</p>
+              </div>
+            </a>
           </div>
         </section>
 
@@ -171,33 +146,6 @@ export default function Home() {
             </div>
           </div>
         </section>
-
-        {/* ── COMMUNITY PARTNERS ────────────────────────────────── */}
-        {partners && partners.length > 0 && (
-          <section className="section-py bg-white" aria-labelledby="partners-heading">
-            <div className="section-container">
-              <div className="text-center mb-8">
-                <span className="badge-green mb-4">Community Partners</span>
-                <h2 id="partners-heading">Thank You to Our Partners</h2>
-                <p className="text-gray-500 mt-3 text-lg max-w-2xl mx-auto">
-                  These local organizations help make our work possible.
-                </p>
-              </div>
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 max-w-5xl mx-auto">
-                {partners.map((partner, i) => (
-                  <div
-                    key={i}
-                    className="bg-neutral-50 border border-gray-200 rounded-xl px-3 py-3
-                               text-center shadow-sm hover:border-brand-300 hover:bg-brand-50
-                               transition-all"
-                  >
-                    <p className="text-sm font-semibold text-gray-700 leading-snug">{partner}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-        )}
 
         {/* ── GET INVOLVED CTA ──────────────────────────────────── */}
         <section className="bg-brand-600 text-white section-py" aria-labelledby="cta-heading">

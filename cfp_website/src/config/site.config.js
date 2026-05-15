@@ -44,7 +44,7 @@ export const BRAND = {
   location: 'Oak Park, IL & Austin Neighborhood, Chicago, IL',
   socialMedia: {
     instagram: '',
-    facebook: '',
+    facebook: 'https://www.facebook.com/communityfridgeproject',
     twitter: '',
   },
   primaryColor: '#3BAA35',
@@ -52,11 +52,11 @@ export const BRAND = {
 
 // ─── NAVIGATION ─────────────────────────────────────────────────────────────
 export const NAV_LINKS = [
-  { label: 'Home',     path: '/' },
-  { label: 'About Us', path: '/about' },
-  { label: 'Donate',   path: '/donate' },
-  { label: 'News',     path: '/news' },
-  { label: 'Contact',  path: '/contact' },
+  { label: 'Home',      path: '/' },
+  { label: 'About Us',  path: '/about' },
+  { label: 'Volunteer', path: '/volunteer' },
+  { label: 'Donate',    path: '/donate' },
+  { label: 'Contact',   path: '/contact' },
 ]
 
 // ─── HOME PAGE ───────────────────────────────────────────────────────────────
@@ -111,6 +111,7 @@ export const FRIDGE_LOCATIONS = [
     name: 'Grace Episcopal Church',
     neighborhood: 'Oak Park, IL',
     address: '924 Lake Street, Oak Park, IL',
+    amenities: 'Fridge/freezer/pantry',
     mapsUrl: 'https://maps.google.com/?q=924+Lake+Street,+Oak+Park,+IL',
   },
   {
@@ -118,28 +119,40 @@ export const FRIDGE_LOCATIONS = [
     name: 'Edwin Gale House',
     neighborhood: 'Oak Park, IL',
     address: '124 N Kenilworth Ave, Oak Park, IL',
+    amenities: 'Fridge/freezer/pantry',
     mapsUrl: 'https://maps.google.com/?q=124+N+Kenilworth+Ave,+Oak+Park,+IL',
   },
   {
     id: 3,
-    name: 'Boulevard Presbyterian Church',
+    name: '607 Harvard Street',
     neighborhood: 'Oak Park, IL',
     address: '607 Harvard St, Oak Park, IL',
+    amenities: 'Fridge/pantry',
     mapsUrl: 'https://maps.google.com/?q=607+Harvard+St,+Oak+Park,+IL',
   },
   {
     id: 4,
     name: 'A House in Austin',
     neighborhood: 'Austin, Chicago, IL',
-    address: 'Austin Neighborhood, Chicago, IL',
-    mapsUrl: 'https://maps.google.com/?q=Austin+Neighborhood,+Chicago,+IL',
+    address: '533 N. Pine Ave., Chicago, IL 60644',
+    amenities: 'Fridge/freezer/pantry',
+    mapsUrl: 'https://maps.google.com/?q=533+N+Pine+Ave,+Chicago,+IL+60644',
   },
   {
     id: 5,
     name: 'United Lutheran Church',
     neighborhood: 'Oak Park, IL',
     address: '409 Greenfield St, Oak Park, IL',
+    amenities: 'Fridge/freezer/pantry',
     mapsUrl: 'https://maps.google.com/?q=409+Greenfield+St,+Oak+Park,+IL',
+  },
+  {
+    id: 6,
+    name: 'New Jehovah MB Baptist Church',
+    neighborhood: 'Austin, Chicago, IL',
+    address: '1101 S Austin Blvd, Chicago, IL 60644',
+    amenities: 'Fridge/freezer/pantry',
+    mapsUrl: 'https://maps.google.com/?q=1101+S+Austin+Blvd,+Chicago,+IL+60644',
   },
 ]
 
@@ -152,6 +165,7 @@ export const COMMUNITY_PARTNERS = [
   'Dark Matter Coffee',
   'District 97',
   'Happy Apple Pie Shop',
+  'Mint Dental',
   'Publican Quality Bread Oak Park',
   "Robert's Westside",
   'Take Out 25',

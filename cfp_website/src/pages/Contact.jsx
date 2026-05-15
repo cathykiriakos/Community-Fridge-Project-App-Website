@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { Mail, MessageSquare, Clock, CheckCircle } from 'lucide-react'
+import { Mail, MessageSquare, Clock, CheckCircle, Facebook } from 'lucide-react'
+import { BRAND } from '../config/site.config'
 import { useContent } from '../hooks/useContent'
 import { PageWithSidebar } from '../components/PageImageSidebar'
 
@@ -92,6 +93,25 @@ export default function Contact() {
                   select "Report a Fridge Issue" in the form and we'll prioritize it.
                 </p>
               </div>
+
+              {BRAND.socialMedia.facebook && (
+                <div className="card">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-10 h-10 bg-brand-100 rounded-lg flex items-center justify-center">
+                      <Facebook size={20} className="text-brand-600" />
+                    </div>
+                    <h3 className="font-bold text-gray-900">Follow Us</h3>
+                  </div>
+                  <a
+                    href={BRAND.socialMedia.facebook}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-brand-600 hover:text-brand-700 font-medium text-sm transition-colors"
+                  >
+                    Community Fridge Project on Facebook
+                  </a>
+                </div>
+              )}
             </div>
 
             {/* Contact form */}
