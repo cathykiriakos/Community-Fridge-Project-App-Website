@@ -96,7 +96,7 @@ export const HOME = {
       {
         icon: '🍱',
         title: 'Take What You Need',
-        description: 'Our fridges are open 24/7 — take what you need, leave what you can. No cost, no ID, no questions asked.',
+        description: 'Community-run fridges for anyone in need. No cost. No ID. No questions.',
       },
     ],
   },
